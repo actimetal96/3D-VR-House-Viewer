@@ -6,14 +6,17 @@ Developing a 3D house viewer for online platforms, searches to bring new freedom
 
 The project models the house dynamically from a set of room and furniture coordinates, enabling changes on the real estate in real-time. We can view the real estate in 3 different view modes, both for desktop and mobile devices.
 
-*Overview Mode:
+Overview Mode:
+
   +Zoom In/Out Feature
   +Fly around the house
   
-*First-person Mode:
+First-person Mode:
+
   +Navigate inside the house
   
-*Virtual Reality Mode (Desktop):
+Virtual Reality Mode (Desktop):
+
   +look Arround feeling
   +A more personal experience
 
