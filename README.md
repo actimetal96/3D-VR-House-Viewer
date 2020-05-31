@@ -25,4 +25,6 @@ The project models the house dynamically from a set of room and furniture coordi
 
 **App must be run on localhost (via per example http-server), otherwise the models won´t load if you simply open the "CubePanorama.html" file**
 
-**The virtual reality and house modelling aspects of the solution are subject to future improvements.**
+The virtual reality and house modelling aspects of the solution are subject to future improvements.
+
+Project's report included in the repo (3DHouseViewerReport.pdf)
