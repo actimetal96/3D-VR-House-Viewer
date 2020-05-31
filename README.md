@@ -21,4 +21,7 @@ The project models the house dynamically from a set of room and furniture coordi
 - Google Cardboard compatibility
 - 3D showcase of the house
 
+####NOTES
+**App must be run on localhost (via per example http-server), otherwise the models won´t load if you simply open the "CubePanorama.html" file**
+
 **The virtual reality and house modelling aspects of the solution are subject to future improvements.**
