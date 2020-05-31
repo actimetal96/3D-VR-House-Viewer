@@ -1,0 +1,31 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Wood_Cherry_Original
+Ka 0.000000 0.000000 0.000000
+Kd 0.596078 0.337255 0.164706
+Ks 0.330000 0.330000 0.330000
+map_Kd kingBed/Wood_Cherry_Original.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Textile_Leaves_Green
+Ka 0.000000 0.000000 0.000000
+Kd 0.874510 0.878431 0.800000
+Ks 0.330000 0.330000 0.330000
+map_Kd kingBed/Textile_Leaves_Green.jpg
+
+newmtl Color_A08
+Ka 0.000000 0.000000 0.000000
+Kd 0.400000 0.000000 0.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Color_D15
+Ka 0.000000 0.000000 0.000000
+Kd 0.600000 0.568627 0.478431
+Ks 0.330000 0.330000 0.330000
+

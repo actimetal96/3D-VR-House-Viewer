@@ -1,0 +1,22 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Blinds_Cloth_Horizontal
+Ka 0.000000 0.000000 0.000000
+Kd 0.752941 0.639216 0.333333
+Ks 0.330000 0.330000 0.330000
+map_Kd bathtub/Blinds_Cloth_Horizontal.jpg
+
+newmtl Translucent_Glass_Sky_Reflection1
+Ka 0.000000 0.000000 0.000000
+Kd 0.486275 0.541176 0.709804
+Ks 0.330000 0.330000 0.330000
+d 0.520000
+map_Kd bathtub/Translucent_Glass_Sky_Reflection1.jpg
+

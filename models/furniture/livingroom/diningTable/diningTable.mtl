@@ -1,0 +1,33 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Wood_Cherry_Original
+Ka 0.000000 0.000000 0.000000
+Kd 0.596078 0.337255 0.164706
+Ks 0.330000 0.330000 0.330000
+map_Kd diningTable/Wood_Cherry_Original.jpg
+
+newmtl Carpet_Diamond_Olive
+Ka 0.000000 0.000000 0.000000
+Kd 0.341176 0.301961 0.239216
+Ks 0.330000 0.330000 0.330000
+map_Kd diningTable/Carpet_Diamond_Olive.jpg
+
+newmtl _Wood_Cherry_Original_1
+Ka 0.000000 0.000000 0.000000
+Kd 0.596078 0.337255 0.164706
+Ks 0.330000 0.330000 0.330000
+map_Kd diningTable/_Wood_Cherry_Original_1.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl _Wood_Cherry_Original__1
+Ka 0.000000 0.000000 0.000000
+Kd 0.729412 0.411765 0.203922
+Ks 0.330000 0.330000 0.330000
+map_Kd diningTable/_Wood_Cherry_Original__1.jpg
+

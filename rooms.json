@@ -1,0 +1,136 @@
+[
+		{		
+			"size":[3,1,5],
+			"position":[2,0,0],
+			"furniture":[
+				 {"path":"./models/furniture/livingroom/tv/","object":"tv.obj","material":"tv.mtl","position":[2,-0.5,-2.4],"scale":0.47,"rotation":[0,0,0]}	
+				,{"path":"./models/furniture/livingroom/sofa/","object":"sofa.obj","material":"sofa.mtl","position":[2.1,-0.5,-0.5],"scale":0.33,"rotation":[0,-34.51,0]}	
+				,{"path":"./models/furniture/livingroom/centerTable/","object":"centerTable.obj","material":"centerTable.mtl","position":[2.1,-0.5,-1.5],"scale":0.3,"rotation":[0,-34.51,0]}	
+				,{"path":"./models/furniture/livingroom/diningTable/","object":"diningTable.obj","material":"diningTable.mtl","position":[2.1,-0.5,1.5],"scale":0.25,"rotation":[0,-34.51,0]}	
+
+			],
+			"front": "./images/livingroom/front.jpg",
+			"back": "./images/livingroom/back.jpg",
+			"left": "./images/livingroom/left.jpg",
+			"right": "./images/livingroom/right.jpg",
+			"top": "./images/livingroom/top.jpg",
+			"bottom": "./images/livingroom/bottom.jpg"
+		},
+		{		
+			"size":[1,1,5],
+			"position":[0,0,0],
+			"furniture":[
+				{"path":"./models/furniture/hall1/stairs/","object":"stairs.obj","material":"stairs.mtl","position":[0,-0.5,-1],"scale":0.5,"rotation":[0,0,0]}
+			],
+			"front": "./images/hall/front.jpg",
+			"back": "./images/hall/back.jpg",
+			"left": "./images/hall/left.jpg",
+			"right": "./images/hall/right.jpg",
+			"top": "./images/hall/top.jpg",
+			"bottom": "./images/hall/bottom.jpg"
+		},
+		{		
+			"size":[3,1,2.5],
+			"position":[-2,0,1.25],
+			"furniture":[
+				{"path":"./models/furniture/kitchen/","object":"kitchen.obj","material":"kitchen.mtl","position":[-2.618,-0.5,0.89],"scale":0.14,"rotation":[0,0,0]},	
+				{"path":"./models/furniture/kitchen/","object":"kitchenTable.obj","material":"kitchenTable.mtl","position":[-1,-0.5,0.89],"scale":0.35,"rotation":[0,0,0]}	
+
+			],
+			"front": "./images/kitchen/front.jpg",
+			"back": "./images/kitchen/back.jpg",
+			"left": "./images/kitchen/left.jpg",
+			"right": "./images/kitchen/right.jpg",
+			"top": "./images/kitchen/top.jpg",
+			"bottom": "./images/kitchen/bottom.jpg"
+		},
+		{		
+			"size":[1.5,1,2.5],
+			"position":[-1.25,0,-1.25],
+			"furniture":[
+				{"path":"./models/furniture/bathroom1/toilet/","object":"toilet.obj","material":"toilet.mtl","position":[-3.3,0.47,-2],"scale":0.5,"rotation":[0,-55,0]},	
+				{"path":"./models/furniture/bathroom1/toiletPaper/","object":"toiletPaper.obj","material":"toiletPaper.mtl","position":[-3.35,0.7,-2.2],"scale":0.4,"rotation":[0,-55,0]},	
+				{"path":"./models/furniture/bathroom1/sink/","object":"sink.obj","material":"sink.mtl","position":[-3.4,0.7,-1.6],"scale":0.5,"rotation":[0,0,0]},
+				{"path":"./models/furniture/bathroom1/bathtub/","object":"bathtub.obj","material":"bathtub.mtl","position":[-2,0.52,-2.1],"scale":0.3,"rotation":[0,0,0]}	
+			],
+			"front": "./images/bathroom1/front.jpg",
+			"back": "./images/bathroom1/back.jpg",
+			"left": "./images/bathroom1/left.jpg",
+			"right": "./images/bathroom1/right.jpg",
+			"top": "./images/bathroom1/top.jpg",
+			"bottom": "./images/bathroom1/bottom.jpg"
+		},
+		{		
+			"size":[1.5,1,2.5],
+			"position":[-2.75,0,-1.25],
+			"furniture":[
+
+			],
+			"front": "./images/laundry/front.jpg",
+			"back": "./images/laundry/back.jpg",
+			"left": "./images/laundry/left.jpg",
+			"right": "./images/laundry/right.jpg",
+			"top": "./images/laundry/top.jpg",
+			"bottom": "./images/laundry/bottom.jpg"
+		},
+		{		
+			"size":[3.5,1,3],
+			"position":[1.75,1,1],
+			"furniture":[
+				{"path":"./models/furniture/bedroomWhite/bed/","object":"bed.obj","material":"bed.mtl","position":[1.9,0.555,0],"scale":0.4,"rotation":[0,0,0]}
+				,{"path":"./models/furniture/bedroomWhite/dresserWhite/","object":"dresserWhite.obj","material":"dresserWhite.mtl","position":[0.1,0.56,1],"scale":0.4,"rotation":[0,0,0]}
+
+			],
+			"front": "./images/bedroomWhite/front.jpg",
+			"back": "./images/bedroomWhite/back.jpg",
+			"left": "./images/bedroomWhite/left.jpg",
+			"right": "./images/bedroomWhite/right.jpg",
+			"top": "./images/bedroomWhite/top.jpg",
+			"bottom": "./images/bedroomWhite/bottom.jpg"
+		},
+		{		
+			"size":[3.5,1,3],
+			"position":[-1.75,1,1],
+			"furniture":[
+				{"path":"./models/furniture/bedroomRed/bedRedLamp/","object":"bedRedLamp.obj","material":"bedRedLamp.mtl","position":[-2.52,0.75,-0.31],"scale":0.37,"rotation":[0,0,0]}
+				,{"path":"./models/furniture/bedroomRed/bedRedLamp/","object":"bedRedLamp.obj","material":"bedRedLamp.mtl","position":[-1.22,0.75,-0.31],"scale":0.37,"rotation":[0,0,0]}
+				,{"path":"./models/furniture/bedroomRed/bedRed/","object":"bedRed.obj","material":"bedRed.mtl","position":[-1.9,0.555,0],"scale":0.5,"rotation":[0,0,0]}
+				,{"path":"./models/furniture/bedroomRed/dresserRed/","object":"dresserRed.obj","material":"dresserRed.mtl","position":[-0.25,0.52,1.5],"scale":0.6,"rotation":[0,0,0]}
+			],
+			"front": "./images/bedroomRed/front.jpg",
+			"back": "./images/bedroomRed/back.jpg",
+			"left": "./images/bedroomRed/left.jpg",
+			"right": "./images/bedroomRed/right.jpg",
+			"top": "./images/bedroomRed/top.jpg",
+			"bottom": "./images/bedroomRed/bottom.jpg"
+		},
+		{		
+			"size":[5,1,2],
+			"position":[1,1,-1.5],
+			"furniture":[
+				{"path":"./models/furniture/hall2/paintingHall2/","object":"paintingHall2.obj","material":"paintingHall2.mtl","position":[3.4,0.7,-1.5],"scale":0.6,"rotation":[0,0,0]}
+
+
+			],
+			"front": "./images/hall2/front.jpg",
+			"back": "./images/hall2/back.jpg",
+			"left": "./images/hall2/left.jpg",
+			"right": "./images/hall2/right.jpg",
+			"top": "./images/hall2/top.jpg",
+			"bottom": "./images/hall2/bottom.jpg"
+		},
+		{		
+			"size":[2,1,2],
+			"position":[-2.5,1,-1.5],
+			"furniture":[
+				{"path":"./models/furniture/bathroom1/toilet/","object":"toilet.obj","material":"toilet.mtl","position":[-3.3,0.47,-2],"scale":0.5,"rotation":[0,-55,0]},	
+				{"path":"./models/furniture/bathroom1/toiletPaper/","object":"toiletPaper.obj","material":"toiletPaper.mtl","position":[-3.35,0.7,-2.2],"scale":0.4,"rotation":[0,-55,0]}	
+			],
+			"front": "./images/bathroom2/front.jpg",
+			"back": "./images/bathroom2/back.jpg",
+			"left": "./images/bathroom2/left.jpg",
+			"right": "./images/bathroom2/right.jpg",
+			"top": "./images/bathroom2/top.jpg",
+			"bottom": "./images/bathroom2/bottom.jpg"
+		}
+]

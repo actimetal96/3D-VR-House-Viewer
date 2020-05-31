@@ -1,0 +1,53 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Slate_Mosaic_Tan
+Ka 0.000000 0.000000 0.000000
+Kd 0.611765 0.588235 0.517647
+Ks 0.330000 0.330000 0.330000
+
+newmtl Bischofia_javanica__Bischofia__Malaysia__Florida___Horiz
+Ka 0.000000 0.000000 0.000000
+Kd 0.811765 0.682353 0.568627
+Ks 0.330000 0.330000 0.330000
+map_Kd bed/Bischofia_javanica__Bischofia__Malaysia__Florida___Horiz.jpg
+
+newmtl Ivory_Leather
+Ka 0.000000 0.000000 0.000000
+Kd 0.874510 0.847059 0.737255
+Ks 0.330000 0.330000 0.330000
+map_Kd bed/Ivory_Leather.png
+
+newmtl Slate_Mosaic_Blue_Grey
+Ka 0.000000 0.000000 0.000000
+Kd 0.482353 0.556863 0.556863
+Ks 0.330000 0.330000 0.330000
+
+newmtl Slate_Mosaic_Grey
+Ka 0.000000 0.000000 0.000000
+Kd 0.549020 0.572549 0.580392
+Ks 0.330000 0.330000 0.330000
+
+newmtl Slate_Mosaic_Red
+Ka 0.000000 0.000000 0.000000
+Kd 0.580392 0.509804 0.419608
+Ks 0.330000 0.330000 0.330000
+
+newmtl Metal_Corrogated_Shiny
+Ka 0.000000 0.000000 0.000000
+Kd 0.756863 0.756863 0.756863
+Ks 0.330000 0.330000 0.330000
+map_Kd bed/Metal_Corrogated_Shiny.jpg
+
+newmtl Metal_Corrogated_Shiny1_
+Ka 0.000000 0.000000 0.000000
+Kd 0.756863 0.756863 0.756863
+Ks 0.330000 0.330000 0.330000
+map_Kd bed/Metal_Corrogated_Shiny1_.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+

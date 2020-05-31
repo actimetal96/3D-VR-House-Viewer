@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - panorama</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+		<style>
+			html, body {
+				background-color: #000;
+				margin: 0px;
+				padding: 0px;
+				overflow: hidden;
+			}
+			#info {
+				position: absolute;
+				top: 0px; width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family:Monospace;
+				font-size:13px;
+				font-weight: bold;
+				text-align:center;
+			}
+
+			body {
+			/* prevent white margin */
+			margin: 0;
+			
+			}
+
+			#blocker {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(0,0,0,0.5);
+			}
+			#instructions {
+				width: 100%;
+				height: 100%;
+				display: -webkit-box;
+				display: -moz-box;
+				display: box;
+				-webkit-box-orient: horizontal;
+				-moz-box-orient: horizontal;
+				box-orient: horizontal;
+				-webkit-box-pack: center;
+				-moz-box-pack: center;
+				box-pack: center;
+				-webkit-box-align: center;
+				-moz-box-align: center;
+				box-align: center;
+				color: #ffffff;
+				text-align: center;
+				cursor: pointer;
+			}
+
+			#joystick-box{
+				position: fixed;
+				bottom: 0;
+				left: 0;
+			}
+
+		</style>
+
+
+
+	</head>
+	<body>
+
+
+		<div id="container">
+			<div id="info">
+				<a href="http://threejs.org" target="_blank" rel="noopener">Made with three.js WebGL</a> - Doll House Alpha Version.
+			</div>
+
+			<div id="Stats-output"></div>
+
+			<div id="blocker">
+				<div id="instructions">
+					<span style="text-align: center;">
+						<span style="font-size:40px">Click to start</span>
+					
+						<br><span style="font-size:20px" style =text-decoration:underline >Controls:</span> 
+							<ol style="text-align:left; list-style-position:inside;">
+							<p>Double click to Cycle through view Modes</p>
+							<p>Overview Mode -> First-Person Mode -> GoogleCardboard Mode</p>
+						  </ol>
+						</span>		
+				</div>
+			</div>
+
+			<div id="canvas-frame"></div>
+			<div id="joystick-box"></div>
+			<div id="vertical-control-box"></div>
+
+
+		</div>	
+		<script src="./lib/three.js"></script>
+		<script src="./lib/OrbitControls.js"></script>
+		<script src="./lib/FirstPersonControls.js"></script>
+		<script src="./lib/stats.js"></script>
+		<script src="./node_modules/jquery/dist/jquery.min.js"></script>
+		<script src="./lib/Sky.js"></script>
+		<script src="./lib/MTLLoader.js"></script>
+		<script src="./lib/TextureLoader.js"></script>
+		<script src="./lib/OBJLoader.js"></script>
+		<script src="./lib/StereoEffect.js"></script>
+		<script src="./lib/hammer.min.js"></script>
+		<script src="./lib/touch-fps-controls.js"></script>
+		<script src="./lib/virtualjoystick.js"></script>
+		<script src="./lib/VRController.js"></script>
+		<script src="./lib/WEBVR.js"></script>
+
+
+		<script>
+				var pathPcd='pointClouds.json';//json path for point cloud files
+				var path = 'rooms.json'; //json path for vertices
+				var orbitCamera,orbitControls;;
+				var fpCamera, fpControls;
+				var renderer, cardboardControls,vrCamera,cardboardCamera,effect;
+				var controller1,controller2;
+				var raycaster, intersected = [];
+				var vrActive,mobile=false;
+				var firstPersonCamera=false;
+				var scene,stats,path;
+				var tempMatrix = new THREE.Matrix4();
+				var joystickContainer,verticalControlsContainer;
+				var prevTime = performance.now();
+				var orbitCameraActive = true;		
+				var prevTime = performance.now();
+				var modeIdx = 0;
+				var up,right,down,left,front,back,rotateRight,rotateLeft = false;
+				var vrMoveSpeed=0.3;
+
+				var modes = [
+						setGlMode,
+						setFirstPersonMode,
+						setStereoMode
+					]; 
+
+				var group = new THREE.Group();
+				var blocker = document.getElementById( 'blocker' );
+
+				var instructions = document.getElementById( 'instructions' );
+					instructions.addEventListener( 'click', function ( event ) {
+						instructions.style.display = 'none';
+						blocker.style.display='none';
+					}, false );
+
+				//Resize Window
+				window.addEventListener( 'resize', onWindowResize, false );
+
+		function init(){		
+				
+					renderer = new THREE.WebGLRenderer();
+					renderer.setPixelRatio( window.devicePixelRatio );
+					renderer.setSize( window.innerWidth, window.innerHeight );
+
+					buildHouse(path);
+
+					if (/Mobi|iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {//checks if user is browsing on mobile device
+    					mobile=true;
+					}
+
+					container.appendChild( renderer.domElement );
+					scene = new THREE.Scene();
+
+					document.addEventListener('dblclick', ondblclick, false);
+
+					var light = new THREE.AmbientLight( 0x404040,1.5  ); // soft white light
+					scene.add( light );
+
+					mobile=true;
+
+					//Orbit Camera
+					orbitCamera= new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100 );
+					orbitCamera.position.z = 10;
+					orbitControls = new THREE.OrbitControls( orbitCamera, renderer.domElement );
+					orbitControls.enableZoom = true;
+					orbitControls.enablePan = false;
+					orbitControls.enableDamping = true;
+					orbitControls.rotateSpeed = 0.20;
+					orbitControls.maxDistance=20;
+					orbitControls.minDistance=5;
+					scene.add(orbitCamera);
+
+					if(mobile){
+					//VR Camera Google Cardboard
+					cardboardCamera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100 )
+					cardboardCamera.position.z=9;
+					cardboardControls = new THREE.OrbitControls(cardboardCamera, renderer.domElement);
+					cardboardControls.autoRotate=true;
+					cardboardControls.autoRotateSpeed=4;
+					cardboardControls.enableRotate=false;
+					cardboardControls.enablePan = false;
+					cardboardControls.enableZoom = false;
+					scene.add(cardboardCamera);
+
+					}else{ //VR Camera Desktop
+						vrCamera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 0.1, 10 )
+						vrCamera.position.z=9;
+
+						dolly=new THREE.Group();       
+   						scene.add(dolly);
+  						dolly.add(vrCamera);
+					};
+					
+					
+					if(!mobile){
+					//First-Person Camera for Desktops
+					fpCamera= new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100 );
+					fpCamera.position.z=5;
+					fpControls = new THREE.FirstPersonControls(fpCamera, renderer.domElement);
+					fpControls.lookSpeed = 0.003;
+					fpControls.movementSpeed = 0.025;
+					fpControls.noFly = false;
+					fpControls.lookVertical = true;
+					fpControls.constrainVertical = true;
+					fpControls.verticalMin = 1.0;
+					fpControls.verticalMax = 2.0;
+					fpControls.lon = -150;
+					fpControls.lat = 120;
+					fpControls.freeze=false;
+					fpControls.mouseDragOn=false;
+					scene.add(fpCamera);
+
+					}else if(mobile){
+
+						fpMobileCamera= new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 0.1, 100 );
+					
+					}
+
+					initSky();
+					stats = initStats();
+		} 
+			
+			init();
+			animate();
+
+
+			document.addEventListener('keydown',press)
+			function press(e){
+				if (e.keyCode === 87 /* w */ ){
+				front = true
+			}
+			if ( e.keyCode === 68 /* d */){
+				right = true
+			}
+			if (e.keyCode === 83 /* s */){
+				back = true
+			}
+			if ( e.keyCode === 65 /* a */ ){
+				left = true
+			}
+			if (e.keyCode === 39 /* up */ ){
+				rotateRight = true
+			}
+			if (e.keyCode === 37 /* down */ ){
+				rotateLeft = true
+			}
+
+			}
+			document.addEventListener('keyup',release)
+			function release(e){
+			if (e.keyCode === 87 /* w */ ){
+				front = false
+			}
+			if ( e.keyCode === 68 /* d */){
+				right = false
+			}
+			if (e.keyCode === 83 /* s */){
+				back = false
+			}
+			if ( e.keyCode === 65 /* a */ ){
+				left = false
+			}
+			if (e.keyCode === 39 /* up */ ){
+				rotateRight = false
+			}
+			if (e.keyCode === 37 /* down */ ){
+				rotateLeft = false
+			}
+			}
+		
+
+function initFPSTouchControls(fpMobileCamera){ 
+	//First-person for mobile devices
+
+					fpMobileCamera.position.z=9;
+
+					var fpMobileControls = new THREE.TouchFPSControls(fpMobileCamera, renderer.domElement, {
+						joystickContainer :document.getElementById('joystick-box'), // set null to disable virtual joystick
+						verticalControlsContainer :document.getElementById('vertical-control-box'),
+						border : null,
+						moveSpeed : 0.25,  //camera moving speed
+						viewMovingSpeed : 5, //sensitivity for camera rotation
+						canFly : true, //if set to true, the camera can move vertically by pushing the virtual joystick forward
+						debug : false,
+					});
+
+					var object = fpMobileControls.getObject();
+					scene.add(object);
+}
+
+		function buildHouse(path){	
+			var textureLoader = new THREE.TextureLoader();//instantiate Texture Loader
+
+			jQuery.getJSON(path,function(room) {
+				console.log(room);  
+				var total=room.length;
+				for(let i=0; i<room.length;i++){
+
+						var materials = [];
+						var left = textureLoader.load( room[i].left);//left
+						left.wrapS = THREE.RepeatWrapping;
+						left.wrapT = THREE.RepeatWrapping;
+						left.repeat.set( room[i].size[2], room[i].size[1] );
+						materials.push( new THREE.MeshBasicMaterial( { map:left , side:THREE.BackSide} ) );
+
+						var right = textureLoader.load( room[i].right);//right
+						right.wrapS = THREE.RepeatWrapping;
+						right.wrapT = THREE.RepeatWrapping;
+						right.repeat.set( room[i].size[2], room[i].size[1] );
+						materials.push( new THREE.MeshBasicMaterial( { map:right , side:THREE.BackSide} ) );
+						
+						var top = textureLoader.load( room[i].top);//top
+						top.wrapS = THREE.RepeatWrapping;
+						top.wrapT = THREE.RepeatWrapping;
+						top.repeat.set( room[i].size[0], room[i].size[2] );
+						materials.push( new THREE.MeshBasicMaterial( { map:top  , side:THREE.BackSide} ));
+
+						var bottom = textureLoader.load( room[i].bottom);//bottom
+						bottom.wrapS = THREE.RepeatWrapping;
+						bottom.wrapT = THREE.RepeatWrapping;
+						bottom.repeat.set( room[i].size[0], room[i].size[2] );
+						materials.push( new THREE.MeshBasicMaterial( { map:bottom , side:THREE.BackSide, } ) );
+
+						var front = textureLoader.load( room[i].front);//front
+						front.wrapS = THREE.RepeatWrapping;
+						front.wrapT = THREE.RepeatWrapping;
+						front.repeat.set( room[i].size[0], room[i].size[1] );
+						materials.push( new THREE.MeshBasicMaterial( { map:front , side:THREE.BackSide} ) );  
+						
+						var back = textureLoader.load( room[i].back);//back
+						back.wrapS = THREE.RepeatWrapping;
+						back.wrapT = THREE.RepeatWrapping;
+						back.repeat.set( room[i].size[0], room[i].size[1] );
+						materials.push(new THREE.MeshBasicMaterial( { map:back , side:THREE.BackSide} ) );
+
+						var building=new THREE.Mesh( new THREE.BoxBufferGeometry( room[i].size[0], room[i].size[1], room[i].size[2] ),materials);
+
+						building.position.set(room[i].position[0],room[i].position[1],room[i].position[2]);
+
+	
+					var path,obj,mtl,position,rotation,scale;
+
+						
+					for(let v=0;v<room[i].furniture.length;v++){//loads all furnitures info
+						path=room[i].furniture[v].path;
+						obj=room[i].furniture[v].object;
+						mtl=room[i].furniture[v].material;
+						position=room[i].furniture[v].position;
+						rotation=room[i].furniture[v].rotation;
+						scale=room[i].furniture[v].scale;
+
+						addLoadModel(path, obj, mtl,position,rotation,scale);
+					};
+						scene.add(building);//for performance issues, we add all the objects(has a group) at the same time to the scene.
+				}; 
+			});
+		};
+
+					// add obj mesh to group
+					function addLoadModel(path, obj, mtl,position,rotation,scale){
+					var mtlLoader = new THREE.MTLLoader();
+					mtlLoader.setPath(path);
+
+					mtlLoader.load( mtl, function( materials ) {
+					materials.preload();
+
+					var objLoader = new THREE.OBJLoader();
+					objLoader.setMaterials( materials );
+					objLoader.setPath(path);
+
+					objLoader.load( obj, function (object){
+						object.position.set(position[0],position[1],position[2]);
+						object.rotation.set(rotation[0],rotation[1],rotation[2]);
+						object.scale.set(scale,scale,scale);
+						scene.add(object);
+					});
+				});
+			}
+			
+		function setGlMode(){
+			renderer.vr.enabled  = false;
+			orbitCameraActive = true;
+			firstPersonCamera=false;
+			vrActive=false; 
+			document.getElementById('joystick-box').setAttribute("style","display:none;");
+			document.getElementById('vertical-control-box').setAttribute("style","display:none;");
+			
+		}
+
+
+
+		function setFirstPersonMode(){
+			renderer.vr.enabled  = false;
+			firstPersonCamera = true; 
+			orbitCameraActive=false;
+			vrActive=false;
+			mouseLook=true; //activate mouse look for First-Person Camera
+			if(mobile){//activate controls for mobile First Person Mode
+				document.getElementById('joystick-box').setAttribute("style","display:all;");
+				document.getElementById('vertical-control-box').setAttribute("style","display:none;");
+				initFPSTouchControls(fpMobileCamera);
+			}
+		}
+
+		function setStereoMode(){
+			renderer.vr.enabled  = false;
+			orbitCameraActive=false;
+			firstPersonCamera=false;
+			vrActive=true;
+
+			if(mobile){
+
+				effect = new THREE.StereoEffect(renderer);
+				document.getElementById('joystick-box').setAttribute("style","display:none;");
+				document.getElementById('vertical-control-box').setAttribute("style","display:none;");
+				effect.setSize( window.innerWidth, window.innerHeight );
+
+			}else if(!mobile){ //VR Controller (DESKTOP)
+						renderer.vr.enabled  = true;
+
+						renderer.gammaInput = true;
+						renderer.gammaOutput = true;		
+						document.body.appendChild( renderer.domElement );
+						document.body.appendChild( WEBVR.createButton( renderer ) )
+
+						controller1 = renderer.vr.getController( 0 );
+						controller1.addEventListener( 'selectstart', onSelectStart );
+						controller1.addEventListener( 'selectend', onSelectEnd );
+						scene.add( controller1 );
+
+						controller2 = renderer.vr.getController( 1 );
+						controller2.addEventListener( 'selectstart', onSelectStart );
+						controller2.addEventListener( 'selectend', onSelectEnd );
+						scene.add( controller2 );
+
+						var geometry = new THREE.BufferGeometry().setFromPoints( [ new THREE.Vector3( vrCamera.position.x, vrCamera.position.y, vrCamera.position.z ), new THREE.Vector3( vrCamera.position.x, vrCamera.position.y, vrCamera.position.z - 1 ) ] );
+						var line = new THREE.Line( geometry );
+						line.name = 'line';
+						line.scale.z = 5;
+						controller1.add( line.clone() );
+						controller2.add( line.clone() );
+						raycaster = new THREE.Raycaster();
+			}
+			scene.remove(line);
+		}
+
+		function onWindowResize() {//resize Windows Handler
+
+			orbitCamera.aspect = window.innerWidth / window.innerHeight;
+			orbitCamera.updateProjectionMatrix();		
+			
+			if(!mobile && firstPersonCamera){//FPCamera Desktop
+
+				fpCamera.aspect = window.innerWidth / window.innerHeight;
+				fpCamera.updateProjectionMatrix();
+
+			}else if(mobile && firstPersonCamera){//FPCamera Mobile
+				fpMobileCamera.aspect = window.innerWidth / window.innerHeight;
+				fpMobileCamera.updateProjectionMatrix();
+			}
+
+			if(!mobile && vrActive){//VR Desktop
+				 vrCamera.aspect = window.innerWidth / window.innerHeight
+				 vrCamera.updateProjectionMatrix()
+
+			}else if(mobile && vrActive){//Google Cardboard Mobile
+				cardboardCamera.aspect = window.innerWidth / window.innerHeight;
+				cardboardCamera.updateProjectionMatrix();
+			}
+
+			renderer.setSize( window.innerWidth, window.innerHeight );
+		};
+
+		function animate() {
+			
+			requestAnimationFrame( animate );
+		
+			if (firstPersonCamera && mobile==false) { //FPCamera Desktop
+				//First-Person Camera Movement
+				var time = performance.now();
+				var delta = ( time - prevTime ) / 1000;
+				prevTime = time;
+				fpControls.update(delta);
+			};
+
+			if(vrActive && mobile){ //google cardboard (MOBILE)
+				//Auto-rotate update
+				cardboardControls.update();
+
+			}else if(vrActive && !mobile){//VR Controller (DESKTOP)
+				renderer.setAnimationLoop( render );
+			}
+
+			stats.update();
+			update();
+			render();
+		}
+
+
+
+		function render() {
+
+			if (orbitCameraActive){//orbit Camera Active(available on dektop and mobile platforms)renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.render( scene, orbitCamera ); 
+			}
+
+			if(vrActive&&!mobile){//VR DESKTOP
+				 renderer.setSize( window.innerWidth, window.innerHeight );
+				 renderer.render(scene,vrCamera);
+
+			}else if(vrActive&&mobile){//Google Cardboard
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				effect.render( scene, cardboardCamera );	
+			}
+
+			if(firstPersonCamera && mobile ){//First-Person Camera Active(only on Mobile Devices)
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.render(scene,fpMobileCamera);
+
+			}else if(firstPersonCamera && !mobile ){//First-Person Camera Active(only on Desktop Devices)
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				renderer.render(scene,fpCamera);
+			}
+		}
+		
+		function update(){
+
+			if(!mobile&&vrActive){//VR DESKTOP
+				if(up){
+					dolly.position.y+=vrMoveSpeed;
+				}else if(down){
+					dolly.position.y-=vrMoveSpeed;
+				}else if(left){
+					dolly.position.x-=vrMoveSpeed;
+				}else if(right){
+					dolly.position.x+=vrMoveSpeed;
+				}else if(rotateLeft){
+					dolly.rotation.y-=vrMoveSpeed;
+				}else if(rotateRight){
+					dolly.rotation.y+=vrMoveSpeed;
+				}
+			}
+		}
+
+	
+			// Handle mobile touch events using Hammer lib
+
+			var mc = new Hammer.Manager(document.getElementById(document.body.domElement));
+
+			mc.add(new Hammer.Tap({
+				event: 'doubletap',
+				taps: 2
+			}));
+
+			mc.add(new Hammer.Tap({
+				event: 'singletap'
+			}));
+
+			mc.get('doubletap').recognizeWith('singletap');
+			mc.get('singletap').requireFailure('doubletap');
+
+			mc.on("doubletap", function (ev) {
+				switchCamera();
+		});
+
+		function switchCamera(){	//switches in between cameras
+			modeIdx = (++modeIdx) % 3;
+			 modes[modeIdx]();
+		}
+
+		function ondblclick(event){ //double click event 
+    		switchCamera();
+		}
+
+
+		function initStats() { //Performance status
+            var stats = new Stats();
+			stats.setMode(0); // 0: fps, 1: ms
+			
+            // Align top-left
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            document.getElementById("Stats-output").appendChild(stats.domElement);
+            return stats;
+        }
+
+		function initSky() {
+				// Add Sky
+				sky = new THREE.Sky();
+				sky.scale.setScalar( 450000 );
+				scene.add( sky );
+
+				// Add Sun Helper
+				sunSphere = new THREE.Mesh(
+					new THREE.SphereBufferGeometry( 20000, 16, 8 ),
+					new THREE.MeshBasicMaterial( { color: 0xffffff } )
+				);
+
+				sunSphere.position.y = - 700000;
+				sunSphere.visible = false;
+				scene.add( sunSphere );
+					var distance = 400000;
+					var uniforms = sky.material.uniforms;
+					uniforms.turbidity.value = 3.1;
+					uniforms.rayleigh.value = 1.379;
+					uniforms.luminance.value = 1;
+					uniforms.mieCoefficient.value =  0.005;
+					uniforms.mieDirectionalG.value = 0.948;
+					var theta = Math.PI * ( 0.095 - 0.5 );
+					var phi = 2 * Math.PI * (  0.3768 - 0.5 );
+					sunSphere.position.x = distance * Math.cos( phi );
+					sunSphere.position.y = distance * Math.sin( phi ) * Math.sin( theta );
+					sunSphere.position.z = distance * Math.sin( phi ) * Math.cos( theta );
+					uniforms.sunPosition.value.copy( sunSphere.position );
+
+					var directionalLight = new THREE.DirectionalLight( 0xffffff, 0.5 );
+					scene.add( directionalLight );
+
+					var light = new THREE.AmbientLight( 0x404040 ); // soft white light
+					scene.add( light );
+			
+		}
+		
+		function initLoadingManager() {
+  
+			const manager = new THREE.LoadingManager();
+			const progressBar = document.querySelector( '#progress' );
+			const loadingOverlay = document.querySelector( '#loading-overlay' );
+
+			let percentComplete = 1;
+			let frameID = null;
+
+			const updateAmount = 0.5; // in percent of bar width, should divide 100 evenly
+
+			const animateBar = () => {
+				percentComplete += updateAmount;
+
+				// if the bar fills up, just reset it.
+				// I'm changing the color only once, you 
+				// could get fancy here and set up the colour to get "redder" every time
+				if ( percentComplete >= 100 ) {
+				
+				progressBar.style.backgroundColor = 'blue'
+				percentComplete = 1;
+
+				}
+
+				progressBar.style.width = percentComplete + '%';
+
+				frameID = requestAnimationFrame( animateBar )
+
+			}
+
+			manager.onStart = () => {
+
+				// prevent the timer being set again
+				// if onStart is called multiple times
+				if ( frameID !== null ) return;
+
+				animateBar();
+
+			};
+
+			manager.onLoad = function ( ) {
+
+				loadingOverlay.classList.add( 'loading-overlay-hidden' );
+
+				// reset the bar in case we need to use it again
+				percentComplete = 0;
+				progressBar.style.width = 0;
+				cancelAnimationFrame( frameID );
+
+			};
+			
+			manager.onError = function ( e ) { 
+				
+				console.error( e ); 
+				
+				progressBar.style.backgroundColor = 'red';
+			
+			}
+			
+			return manager;
+			}
+
+			function onSelectStart( event ) {
+				var controller = event.target;
+				var intersections = getIntersections( controller );
+				if ( intersections.length > 0 ) {
+					var intersection = intersections[ 0 ];
+					tempMatrix.getInverse( controller.matrixWorld );
+					var object = intersection.object;
+					object.matrix.premultiply( tempMatrix );
+					object.matrix.decompose( object.position, object.quaternion, object.scale );
+					object.material.emissive.b = 1;
+					controller.add( object );
+					controller.userData.selected = object;
+				}
+			}
+			function onSelectEnd( event ) {
+				var controller = event.target;
+				if ( controller.userData.selected !== undefined ) {
+					var object = controller.userData.selected;
+					object.matrix.premultiply( controller.matrixWorld );
+					object.matrix.decompose( object.position, object.quaternion, object.scale );
+					object.material.emissive.b = 0;
+					group.add( object );
+					controller.userData.selected = undefined;
+				}
+			}
+			function getIntersections( controller ) {
+				tempMatrix.identity().extractRotation( controller.matrixWorld );
+				raycaster.ray.origin.setFromMatrixPosition( controller.matrixWorld );
+				raycaster.ray.direction.set( 0, 0, -1 ).applyMatrix4( tempMatrix );
+				return raycaster.intersectObjects( group.children );
+			}
+			function intersectObjects( controller ) {
+				// Do not highlight when already selected
+				if ( controller.userData.selected !== undefined ) return;
+				var line = controller.getObjectByName( 'line' );
+				var intersections = getIntersections( controller );
+				if ( intersections.length > 0 ) {
+					var intersection = intersections[ 0 ];
+					var object = intersection.object;
+					object.material.emissive.r = 1;
+					intersected.push( object );
+					line.scale.z = intersection.distance;
+				} else {
+					line.scale.z = 5;
+				}
+			}
+			function cleanIntersected() {
+				while ( intersected.length ) {
+					var object = intersected.pop();
+					object.material.emissive.r = 0;
+				}
+			}
+
+				
+		</script>
+	</body>
+</html>

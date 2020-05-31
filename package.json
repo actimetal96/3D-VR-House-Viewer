@@ -1,0 +1,27 @@
+{
+  "name": "panoramaviewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "dependencies": {
+    "hammerjs": "^2.0.8",
+    "jquery": "^3.4.1",
+    "three-first-person-controls": "^0.2.1"
+  },
+  "devDependencies": {
+    "standard-version": "^7.0.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://1140443@bitbucket.org/1140443/3dhouseviewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/1140443/3dhouseviewer#readme"
+}

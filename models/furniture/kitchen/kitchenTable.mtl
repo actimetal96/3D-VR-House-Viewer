@@ -1,0 +1,32 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl _2
+Ka 0.000000 0.000000 0.000000
+Kd 0.619608 0.411765 0.172549
+Ks 0.330000 0.330000 0.330000
+map_Kd kitchenTable/_2.jpg
+
+newmtl FrontColor
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl Wood__Floor
+Ka 0.000000 0.000000 0.000000
+Kd 0.607843 0.411765 0.239216
+Ks 0.330000 0.330000 0.330000
+map_Kd kitchenTable/Wood__Floor.jpg
+
+newmtl Wood_Bamboo_Medium
+Ka 0.000000 0.000000 0.000000
+Kd 0.694118 0.411765 0.168627
+Ks 0.330000 0.330000 0.330000
+map_Kd kitchenTable/Wood_Bamboo_Medium.jpg
+
+newmtl Color_C04
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 0.800000 0.600000
+Ks 0.330000 0.330000 0.330000
+

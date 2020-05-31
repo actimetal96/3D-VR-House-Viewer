@@ -1,0 +1,21 @@
+#
+## Alias OBJ Material File
+# Exported from SketchUp, (c) 2000-2012 Trimble Navigation Limited
+
+newmtl Picture4
+Ka 0.000000 0.000000 0.000000
+Kd 0.243137 0.035294 0.011765
+Ks 0.330000 0.330000 0.330000
+map_Kd sofa/Picture4.jpg
+
+newmtl Color_A08
+Ka 0.000000 0.000000 0.000000
+Kd 0.400000 0.000000 0.000000
+Ks 0.330000 0.330000 0.330000
+
+newmtl M_397943681_84303adf69
+Ka 0.000000 0.000000 0.000000
+Kd 0.203922 0.023529 0.035294
+Ks 0.330000 0.330000 0.330000
+map_Kd sofa/M_397943681_84303adf69.jpg
+
