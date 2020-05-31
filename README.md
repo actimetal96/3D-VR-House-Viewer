@@ -14,7 +14,11 @@ The project models the house dynamically from a set of room and furniture coordi
 - Navigate inside the house
   
 ### Virtual Reality Mode (Desktop):
-- Look Arround feeling
+- Look around feeling
 - A more personal experience
+
+### Virtual Reality Mode (Mobile):
+- Google Cardboard compatibility
+- 3D showcase of the house
 
 **The virtual reality and house modelling aspects of the solution are subject to future improvements.**
