@@ -17,4 +17,4 @@ The project models the house dynamically from a set of room and furniture coordi
 - Look Arround feeling
 - A more personal experience
 
-**The virtual reality and house modelling aspects of the solution are subject to future improvements.
+**The virtual reality and house modelling aspects of the solution are subject to future improvements.**
